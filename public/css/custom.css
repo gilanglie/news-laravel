@@ -1,0 +1,42 @@
+.main-header, .main-header .slick-list{padding:0 !important;}
+.main-header .card {border: none;background-size: cover !important}
+.main-header .left-content .card {height: 150px;width: 100% !important;}
+.main-header .left-content .card .card-body,.main-header .main-banner .card {height: 100%;} 
+.overlay {background: rgba(0,0,0,0.5);}
+.card:focus {outline: none;}
+.main-banner .slick-list, .main-banner .slick-list .slick-track, .main-banner .slick-list .card .card-body {height: 100%;}
+.card.forecast {height: calc(100% - 150px);}
+.card.rate {height:150px;}
+.forecast .card-subtitle {position: absolute;bottom: 20px;}
+.markdown {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 500px;
+}
+.main-banner .bottom{
+    position: absolute;
+    width: 100%;
+    bottom: 20px;
+}
+.article-card {
+    border: none;
+}
+.article-card .card-footer {
+    background: white;
+}
+a:hover {
+    text-decoration: none;
+}
+.badge{font-size: 14px;color: white;text-transform: capitalize}
+.badge-business{background-color:#ff9f43}
+.badge-lifestyle{background-color:#f368e0}
+.badge-sport{background-color:#54a0ff}
+.badge-tech{background-color:#5f27cd}
+.badge-travel{background-color:#1dd1a1}
+.card-top{position: relative;}
+.card-top .badge {
+    position: absolute;
+    bottom: 0;
+    margin: 12px;
+}
