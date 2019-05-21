@@ -37,6 +37,36 @@
 </div>
 <div class="container content mt-4  ">
   <div class="row">
+    <div class="col-12 mb-4">
+      <form class="row" method="get" action="/sort"> 
+      {!! csrf_field() !!}
+          <div class="mr-4">
+            <select id="inputState" class="form-control" name="sortBy">
+              @if($sort == 'DESC')
+              <option value="DESC" selected>Newest Post</option>
+              <option value="ASC">Older Post</option>
+              @else
+              <option value="DESC" >Newest Post</option>
+              <option value="ASC" selected>Older Post</option>
+              @endif
+            </select>
+          </div>
+          <div class="dropdown mr-4">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownTag" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Select Tag
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownTag">
+                @foreach ($tags as $tag)
+                <div class="form-check dropdown-item">
+                    <input class="form-check-input" name="tags[]" type="checkbox" id="{{$tag->tag}}" value="{{$tag->tag}}" {{$tag->checked}}>
+                  <label class="form-check-label" for="{{$tag->tag}}" >{{$tag->tag}}</label>
+                </div>
+                @endforeach
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Sort</button>
+      </form>
+    </div>
     @foreach ($articles as $article)
     <a class="col-4 text-dark" href="article/{{$article->id}}">
       <div class="card shadow mb-4 article-card">
@@ -48,13 +78,12 @@
           <h4 class="card-title">{{$article->title}}</h4>
         </div>
         <div class="card-footer text-muted">
-          Posted on {{$article->created_at}}
+          Posted on {{$article->created_at->diffForHumans()}}
         </div>
-      </div>
+      </div> 
     </a>
     @endforeach
-    {{ $articles->links() }}
-  </div>
+    {{ $articles->appends(request()->query())->links() }}  </div>
 </div>
 
 </div>

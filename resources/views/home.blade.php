@@ -12,9 +12,40 @@
                         {{ session('status') }}
                     </div>
                 @endif
-                
-                
                 <button type="button" class="btn btn-primary mb-4 add-btn" >Add New</button>
+
+                {{-- filter  --}}
+                <div class="col-12 mb-4">
+                    <form class="row" method="get" action="/home/sort">
+                    {!! csrf_field() !!}
+                        <div class="mr-4">
+                            <select id="inputState" class="form-control" name="sortBy">
+                            @if($sort == 'DESC')
+                            <option value="DESC" selected>Newest Post</option>
+                            <option value="ASC">Older Post</option>
+                            @else
+                            <option value="DESC" >Newest Post</option>
+                            <option value="ASC" selected>Older Post</option>
+                            @endif
+                            </select>
+                        </div>
+                        <div class="dropdown mr-4">
+                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownTag" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Select Tag
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownTag">
+                                @foreach ($tags as $tag)
+                                <div class="form-check dropdown-item">
+                                    <input class="form-check-input" name="tags[]" type="checkbox" id="{{$tag->tag}}" value="{{$tag->tag}}" {{$tag->checked}}>
+                                <label class="form-check-label" for="{{$tag->tag}}" >{{$tag->tag}}</label>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Sort</button>
+                    </form>
+                </div>
+
                 {{-- article list --}}
                 <table class="table table-bordered table-hover table-striped">
                     <thead>
@@ -39,6 +70,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{ $articles->appends(request()->query())->links() }}  </div>
             </div>
         </div>
     </div>
@@ -46,8 +78,8 @@
 
 <div class="modal fade" id="modalPopup" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form method="post" action="/article/add">
-            {{ csrf_field() }}  
+        <form method="post" action="/article/add" enctype="multipart/form-data">>
+            {{ csrf_field() }}   {{ method_field('post') }}
             <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modal">Add New</h5>
@@ -62,13 +94,14 @@
                 </div>
                 <div class="form-group">
                     <label for="img" >Img Url</label>
-                    <input type="text" class="form-control" id="img" placeholder="Example: https://lorempixel.com/1080/720/?75033" name="img">
+                    <input type="text" class="form-control" id="img" placeholder="Example: https://lorempixel.com/1080/720/?75033" name="imgUrl">
+                    <input type="file" name="imgFile" accept="image/*">
                 </div>
                 <div class="form-group">
                         <label for="tag">Tag</label>
                         <select class="form-control" id="tag" name="tag">
-                            @foreach($articles as $article)
-                                <option value="{{$article->tag}}">{{$article->tag}}</option>
+                            @foreach ($tags as $tag)
+                                <option value="{{$tag->tag}}">{{$tag->tag}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -105,7 +138,7 @@
         var modal = $('#modalPopup');
         modal.find('form').attr('action','/article/update/'+ id)
         modal.find('input[name="title"]').val(title)
-        modal.find('input[name="img"]').val(img)
+        modal.find('input[name="imgUrl"]').val(img)
         modal.find('select[name="tag"]').val(tag)
         modal.find('textarea[name="text"]').val(content)
         modal.modal('show');

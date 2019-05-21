@@ -17,10 +17,17 @@ class ArticleController extends Controller
         $this->validate($request,[
     		'title' => 'required',
     	]);
- 
+        if(!$request->imgFile){ 
+            $img = $request->imgUrl;
+        }else{
+            $file = $request->file('imgFile');
+            $uploadDir = 'uploads';
+            $path = url($file->move($uploadDir,$file->getClientOriginalName()));
+            $img =  $path;
+        };
         Article::create([
             'title' => $request->title,
-            'img' => $request->img,
+            'img' => $img,
             'tag' => $request->tag,
             'text' => $request->text,
     	]);
@@ -31,15 +38,24 @@ class ArticleController extends Controller
     {
         $this->validate($request,[
     		'title' => 'required',
-         ]);
-     
-         $article = Article::find($id);
-         $article->title = $request->title;
-         $article->img = $request->img;
-         $article->tag = $request->tag;
-         $article->text = $request->text;
-         $article->save();
-         return redirect('/home');
+        ]);
+
+        if(!$request->imgFile){ 
+            $img = $request->imgUrl;
+        }else{
+            $file = $request->file('imgFile');
+            $uploadDir = 'uploads';
+            $path = url($file->move($uploadDir,$file->getClientOriginalName()));
+            $img =  $path;
+        };
+
+        $article = Article::find($id);
+        $article->title = $request->title;
+        $article->img = $img;
+        $article->tag = $request->tag;
+        $article->text = $request->text;
+        $article->save();
+        return redirect('/home');
     }
     public function delete($id)
     {

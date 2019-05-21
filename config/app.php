@@ -228,6 +228,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Forecast' => Nwidart\LaravelForecast\ForecastFacade::class,
         'Swap' => Swap\Laravel\Facades\Swap::class,
+        'Filter' => App\Http\Helpers\Filter::class,
     ],
 
 ];

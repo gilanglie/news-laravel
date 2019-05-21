@@ -11,8 +11,11 @@
 |
 */
 
-Route::get('/', 'MainController@index');
+Route::get('/', 'MainController@index'); 
+Route::get('/sort', 'MainController@sort');
+
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home/sort', 'HomeController@sort');
 Auth::routes();
 // crud 
 Route::get('/article/{id}', 'ArticleController@index');
